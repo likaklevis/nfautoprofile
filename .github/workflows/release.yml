@@ -1,0 +1,105 @@
+name: Build and release
+
+on:
+  push:
+    branches: ['**']
+    tags: ['v*']
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@820762786026740c76f36085b0efc47a31fe5020 # v7.0.0
+        with:
+          node-version: '24'
+          cache: npm
+      - run: npm ci
+      - run: npx --no-install playwright install --with-deps chromium firefox
+      - run: npm test
+      - name: Package browsers
+        env:
+          REF_TYPE: ${{ github.ref_type }}
+          REF_NAME: ${{ github.ref_name }}
+        run: |
+          node --input-type=module <<'NODE'
+          import { mkdir, readFile, readdir, stat, writeFile } from 'node:fs/promises';
+          import path from 'node:path';
+          import { zipSync } from 'fflate';
+
+          const manifest = JSON.parse(await readFile('extension/manifest.json', 'utf8'));
+          if (!/^\d+\.\d+\.\d+$/.test(manifest.version)) {
+            throw new Error('Use a three-part version such as 1.0.0.');
+          }
+          if (process.env.REF_TYPE === 'tag' && process.env.REF_NAME !== `v${manifest.version}`) {
+            throw new Error('The tag must match the version in extension/manifest.json.');
+          }
+
+          const files = { LICENSE: await readFile('LICENSE') };
+          async function collect(directory, prefix = '') {
+            for (const name of (await readdir(directory)).sort()) {
+              const filename = path.join(directory, name);
+              const entry = prefix ? `${prefix}/${name}` : name;
+              if ((await stat(filename)).isDirectory()) await collect(filename, entry);
+              else files[entry] = await readFile(filename);
+            }
+          }
+          await collect('extension');
+
+          const firefox = {
+            ...manifest,
+            background: { scripts: ['vault.js', 'settings.js', 'background.js'] },
+            browser_specific_settings: {
+              gecko: {
+                id: 'nf-auto-profile@extensions.local',
+                strict_min_version: '140.0',
+                data_collection_permissions: { required: ['authenticationInfo'] }
+              }
+            }
+          };
+          delete firefox.minimum_chrome_version;
+
+          await mkdir('dist', { recursive: true });
+          for (const [browser, config] of Object.entries({ chromium: manifest, firefox })) {
+            const archive = {
+              ...files,
+              'manifest.json': Buffer.from(`${JSON.stringify(config, null, 2)}\n`)
+            };
+            const name = `nf-auto-profile-${browser}-${manifest.version}.zip`;
+            const zip = zipSync(archive, { level: 9, mtime: new Date(2026, 0, 1) });
+            await writeFile(path.join('dist', name), zip);
+          }
+          NODE
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        with:
+          name: browser-builds
+          path: dist/*.zip
+          if-no-files-found: error
+
+  release:
+    needs: build
+    if: github.event_name == 'push' && startsWith(github.ref, 'refs/tags/v')
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write
+    steps:
+      - uses: actions/download-artifact@3e5f45b2cfb9172054b4087a40e8e0b5a5461e7c # v8.0.1
+        with:
+          name: browser-builds
+          path: dist
+      - name: Publish release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          GH_REPO: ${{ github.repository }}
+          RELEASE_TAG: ${{ github.ref_name }}
+        run: |
+          PREVIOUS_TAG=$(gh release view --json tagName --jq '.tagName')
+          gh release create "$RELEASE_TAG" dist/*.zip --verify-tag --title "$RELEASE_TAG" \
+            --notes "**Full Changelog**: [$PREVIOUS_TAG...$RELEASE_TAG](https://github.com/$GH_REPO/compare/$PREVIOUS_TAG...$RELEASE_TAG)"

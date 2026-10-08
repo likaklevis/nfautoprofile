@@ -1,0 +1,126 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>NF Auto Profile — automatic Netflix profile selection</title>
+  <meta name="description" content="Skip Netflix’s profile picker. NF Auto Profile selects your profile and enters its PIN. Free and open source for Chrome, Edge, Chromium, Brave, Firefox and Opera.">
+  <meta name="theme-color" content="#f6f4f1">
+  <link rel="canonical" href="https://nfautoprofile.klika.dev/">
+  <link rel="icon" type="image/png" sizes="128x128" href="/assets/favicon.png">
+  <link rel="preload" href="https://klika.dev/fonts/SourceSans3-Variable.woff2" as="font" type="font/woff2" crossorigin>
+  <link rel="preload" href="https://klika.dev/fonts/LeagueSpartan-Variable.ttf" as="font" type="font/ttf" crossorigin>
+  <link rel="stylesheet" href="https://klika.dev/styles.css">
+  <meta property="og:type" content="website">
+  <meta property="og:site_name" content="NF Auto Profile">
+  <meta property="og:title" content="Your profile. Already open.">
+  <meta property="og:description" content="Automatically select your Netflix profile and enter its PIN.">
+  <meta property="og:url" content="https://nfautoprofile.klika.dev/">
+  <meta property="og:image" content="https://nfautoprofile.klika.dev/assets/preview.png">
+  <meta property="og:image:alt" content="Preview of NF Auto Profile.">
+  <meta name="twitter:card" content="summary_large_image">
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "NF Auto Profile",
+    "url": "https://nfautoprofile.klika.dev/",
+    "description": "A browser extension that automatically selects your Netflix profile and enters its saved PIN.",
+    "applicationCategory": "BrowserApplication",
+    "isAccessibleForFree": true,
+    "license": "https://github.com/likaklevis/nfautoprofile/blob/main/LICENSE",
+    "downloadUrl": "https://github.com/likaklevis/nfautoprofile/releases/latest",
+    "screenshot": "https://nfautoprofile.klika.dev/assets/preview.png",
+    "author": { "@type": "Person", "name": "Klevis", "url": "https://klika.dev" }
+  }
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#main">Skip to content</a>
+  <div class="page">
+    <nav class="contact" aria-label="Main navigation">
+      <a href="/" aria-label="NF Auto Profile home"><img src="/assets/icon.svg" width="24" height="24" alt=""></a>
+      <span>NF Auto Profile</span>
+      <span aria-hidden="true">·</span>
+      <a href="#install">Install</a>
+      <span aria-hidden="true">·</span>
+      <a href="https://github.com/likaklevis/nfautoprofile">GitHub</a>
+    </nav>
+
+    <main id="main">
+      <div>
+        <section aria-labelledby="intro-title">
+          <div class="identity">
+            <h1 id="intro-title">Your profile.<br>Already open.</h1>
+          </div>
+          <p class="bio">Automatically opens your Netflix profile and enters its PIN.</p>
+          <img class="page" src="/assets/preview.png" width="1400" fetchpriority="high" alt="Example profile chooser with Alex, Sam and Robin, alongside NF Auto Profile with Alex selected and a saved PIN.">
+        </section>
+
+        <section class="skills" id="manual-installation" aria-labelledby="manual-title">
+          <h2 id="manual-title">Manual installation</h2>
+          <dl class="skill-list">
+            <div class="skill-row">
+              <dt>Chromium browsers</dt>
+              <dd>
+                <p>Chrome, Edge, Brave, Opera, any Chromium browser.</p>
+                <ol>
+                  <li>Download the <a href="https://github.com/likaklevis/nfautoprofile/releases/latest">Chromium ZIP</a> and unzip it.</li>
+                  <li>Open your browser’s extensions page and turn on <strong>Developer mode</strong>.</li>
+                  <li>Choose <strong>Load unpacked</strong> and select the unzipped folder.</li>
+                </ol>
+              </dd>
+            </div>
+            <div class="skill-row">
+              <dt>Firefox</dt>
+              <dd>
+                <p>Manual installs are removed when Firefox restarts.</p>
+                <ol>
+                  <li>Download the <a href="https://github.com/likaklevis/nfautoprofile/releases/latest">Firefox ZIP</a>. <strong>Do not unzip it.</strong></li>
+                  <li>Open <code>about:debugging<wbr>#/runtime/<wbr>this-firefox</code>.</li>
+                  <li>Click <strong>Load Temporary Add-on</strong> and select the downloaded ZIP file.</li>
+                </ol>
+              </dd>
+            </div>
+          </dl>
+        </section>
+      </div>
+
+      <div class="projects">
+        <section id="install" aria-labelledby="install-title">
+          <h2 id="install-title">Install</h2>
+          <div class="item">
+            <h3><a href="https://addons.mozilla.org/firefox/addon/nfautoprofile/"><img src="/assets/firefox.svg" width="24" height="24" alt=""> Install for Firefox <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M6 4h10v10M16 4 4 16"/></svg></a></h3>
+          </div>
+          <div class="item">
+            <h3><a href="https://addons.opera.com/extensions/details/nf-auto-profile/"><img src="/assets/opera.svg" width="24" height="24" alt=""> Install for Opera <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M6 4h10v10M16 4 4 16"/></svg></a></h3>
+          </div>
+          <div class="item">
+            <h3><a href="#manual-installation">Chrome / Edge / Chromium / Brave <svg width="18" height="18" viewBox="0 0 20 20" fill="none" stroke="currentColor" stroke-width="1.5" aria-hidden="true"><path d="M10 3v14m-5-5 5 5 5-5"/></svg></a></h3>
+          </div>
+        </section>
+
+        <section class="skills" id="help" aria-labelledby="help-title">
+          <h2 id="help-title">Need help?</h2>
+          <p class="title"><a href="https://github.com/likaklevis/nfautoprofile/issues/new">Open a GitHub issue</a></p>
+          <p><a href="mailto:klevis@klika.dev?subject=NF%20Auto%20Profile%20support">klevis@klika.dev</a></p>
+        </section>
+
+      </div>
+    </main>
+
+    <footer>
+      <div class="ending-line" aria-hidden="true"></div>
+      <nav class="contact" aria-label="Footer">
+        <span>Not affiliated with Netflix.</span>
+        <span aria-hidden="true">·</span>
+        <a href="https://github.com/likaklevis/nfautoprofile/blob/main/PRIVACY.md">Privacy</a>
+        <span aria-hidden="true">·</span>
+        <a href="https://github.com/likaklevis/nfautoprofile/blob/main/LICENSE">License</a>
+        <span aria-hidden="true">·</span>
+        <a href="https://klika.dev">Made by Klevis</a>
+      </nav>
+    </footer>
+  </div>
+</body>
+</html>

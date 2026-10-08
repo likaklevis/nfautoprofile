@@ -1,0 +1,18 @@
+{
+  "name": "nf-auto-profile",
+  "private": true,
+  "description": "Remember a Netflix profile and its PIN in this browser.",
+  "license": "MIT",
+  "type": "module",
+  "engines": {
+    "node": ">=20"
+  },
+  "scripts": {
+    "test": "node --test --test-concurrency=1"
+  },
+  "devDependencies": {
+    "fake-indexeddb": "6.2.5",
+    "fflate": "0.8.3",
+    "playwright": "1.63.0"
+  }
+}
